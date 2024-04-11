@@ -26,7 +26,7 @@ evaluation_functions = [
 
 class QualityExplanationService(QualityExplanationServiceServicer):
     def Explain(self, request, context):
-        openai.api_key = "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"
+        openai.api_key = "key"
 
         prompt = {
             'claim': request.claim,
