@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "server-prototype"
+version = "0.1.0"
+description = "a prototype of a server for interacting with openai api"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "server_prototype"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+arg-services = "^1.7.1"
+openai = "^1.17.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
