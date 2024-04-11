@@ -51,7 +51,7 @@ clustering_functions = [
 
 class GranularityService(granularity_pb2_grpc.GranularityServiceServicer):
     def FineGranularClustering(self, request, context):
-        openai.api_key = "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"
+        openai.api_key = "key"
 
         clustering_input = {
             'query': request.query,
