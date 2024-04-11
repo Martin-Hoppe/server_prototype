@@ -7,7 +7,7 @@ from arg_services.ranking.v1beta import granularity_pb2_grpc, granularity_pb2
 clustering_functions = [
     {
         'name': 'cluster_adus',
-        'description': 'Predicts clustering scores for a list of ADUs based on a given query',
+        'description': 'Predict clustering scores for a list of ADUs based on a given query and return as valid JSON',
         'parameters': {
             'type': 'object',
             'properties': {
@@ -21,10 +21,37 @@ clustering_functions = [
         }
     }
 ]
+clustering_functions = [
+    {
+        'name': 'cluster_adus',
+        'description': 'Predict clustering scores for a list of ADUs based on a given query and return as valid JSON',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'query': {'type': 'string', 'description': 'The main query against which ADUs are ranked.'},
+                'adus': {
+                    'type': 'array',
+                    'items': {
+                        'type': 'object',
+                        'properties': {
+                            'text': {'type': 'string', 'description': 'The text content of the adu'},
+                            'stance': {'type': 'number', 'description': 'ranking by stance'},
+                            'frame': {'type': 'number', 'description': 'ranking by frame'},
+                            'meaning': {'type': 'number', 'description': 'ranking by meaning'},
+                            'hierarchic': {'type': 'number', 'description': 'hierarchic position of the adu'}
+                        }
+                    },
+                    'description': 'List of argumentative discussion units to be evaluated.'
+                }
+            }
+        }
+    }
+]
+
 
 class GranularityService(granularity_pb2_grpc.GranularityServiceServicer):
     def FineGranularClustering(self, request, context):
-        openai.api_key = "key"
+        openai.api_key = "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"
 
         clustering_input = {
             'query': request.query,
@@ -65,7 +92,7 @@ def serve():
     granularity_pb2_grpc.add_GranularityServiceServicer_to_server(GranularityService(), server)
     server.add_insecure_port('[::]:50100')
     server.start()
-    print("Server started, listening on port 50200")
+    print("Server started, listening on port 50100")
     server.wait_for_termination()
 
 if __name__ == '__main__':
