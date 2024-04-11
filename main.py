@@ -18,7 +18,7 @@ evaluation_functions = [
                 'premise2': {'type': 'string', 'description': 'Second premise to evaluate.'},
                 'premise1_score': {'type': 'string', 'description': 'The score for premise 1 as a float'},
                 'premise2_score': {'type': 'string', 'description': 'The score for premise 2 as a float'},
-                'explanation' : {'type': 'string', 'description': 'Why you scored as you did'}
+                'explanation': {'type': 'string', 'description': 'Why you scored as you did'}
             }
         }
     }
@@ -26,7 +26,7 @@ evaluation_functions = [
 
 class QualityExplanationService(QualityExplanationServiceServicer):
     def Explain(self, request, context):
-        openai.api_key = "key"
+        openai.api_key = "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"
 
         prompt = {
             'claim': request.claim,
@@ -50,9 +50,9 @@ class QualityExplanationService(QualityExplanationServiceServicer):
             dimension_name = "Standard Evaluation"
 
             # Example logic to pick the global convincingness
-            if evaluations['premise1_score'] > evaluations['premise2_score']:
+            if float(evaluations['premise1_score']) > float(evaluations['premise2_score']):
                 global_convincingness = explanation_pb2.PREMISE_CONVINCINGNESS_PREMISE_1
-            elif evaluations['premise1_score'] == evaluations['premise2_score']:
+            elif float(evaluations['premise1_score']) == float(evaluations['premise2_score']):
                 global_convincingness = explanation_pb2.PREMISE_CONVINCINGNESS_UNSPECIFIED
             else:
                 global_convincingness = explanation_pb2.PREMISE_CONVINCINGNESS_PREMISE_2
@@ -60,8 +60,8 @@ class QualityExplanationService(QualityExplanationServiceServicer):
             # Create the QualityDimension
             quality_dimension = explanation_pb2.QualityDimension(
                 convincingness=global_convincingness,
-                premise1=evaluations['premise1_score'],
-                premise2=evaluations['premise2_score'],
+                premise1=float(evaluations['premise1_score']),
+                premise2=float(evaluations['premise2_score']),
                 explanation=evaluations['explanation'],
                 methods=["GPT-4 Evaluation"]
             )
