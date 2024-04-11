@@ -6,47 +6,49 @@ from arg_services.ranking.v1beta import granularity_pb2_grpc, granularity_pb2
 
 clustering_functions = [
     {
-        'name': 'cluster_adus',
-        'description': 'Predict clustering scores for a list of ADUs based on a given query and return as valid JSON',
-        'parameters': {
-            'type': 'object',
-            'properties': {
-                'query': {'type': 'string', 'description': 'The main query against which ADUs are ranked.'},
-                'adus': {
-                    'type': 'array',
-                    'items': {'type': 'string'},
-                    'description': 'List of argumentative discussion units to be evaluated.'
-                }
-            }
-        }
-    }
-]
-clustering_functions = [
-    {
-        'name': 'cluster_adus',
-        'description': 'Predict clustering scores for a list of ADUs based on a given query and return as valid JSON',
-        'parameters': {
-            'type': 'object',
-            'properties': {
-                'query': {'type': 'string', 'description': 'The main query against which ADUs are ranked.'},
-                'adus': {
-                    'type': 'array',
-                    'items': {
-                        'type': 'object',
-                        'properties': {
-                            'text': {'type': 'string', 'description': 'The text content of the adu'},
-                            'stance': {'type': 'number', 'description': 'ranking by stance'},
-                            'frame': {'type': 'number', 'description': 'ranking by frame'},
-                            'meaning': {'type': 'number', 'description': 'ranking by meaning'},
-                            'hierarchic': {'type': 'number', 'description': 'hierarchic position of the adu'}
+        "name": "cluster_adus",
+        "description": "This function aims to cluster Argumentative Discussion Units (ADUs) by analyzing their stances, frames, and meanings in relation to a given query. It first classifies ADUs based on their polarity (supporting or opposing) and further organizes them by their frames (e.g., economic, environmental) to cater to diverse user perspectives. Lastly, it clusters ADUs by meaning to minimize redundancy, ensuring a diverse yet concise representation of arguments. The result is a structured JSON output that systematically presents clustered ADUs for enhanced navigability and comprehension.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The main query or claim that serves as a reference point for clustering ADUs. It represents the central topic around which the arguments are structured."
+                },
+                "adus": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The textual content of the Argumentative Discussion Unit (ADU), representing a singular argument or premise."
+                            },
+                            "stance": {
+                                "type": "number",
+                                "description": "A score representing the ADU's stance in relation to the query, where a positive score indicates support, and a negative score indicates opposition."
+                            },
+                            "frame": {
+                                "type": "number",
+                                "description": "A classification score that identifies the perspective or frame from which the ADU approaches the query, such as economic, ethical, or environmental."
+                            },
+                            "meaning": {
+                                "type": "number",
+                                "description": "A score assessing the semantic content of the ADU, used to cluster ADUs with similar meanings to reduce redundancy in the argument presentation."
+                            },
+                            "hierarchic": {
+                                "type": "number",
+                                "description": "A hierarchical position score indicating the ADU's level of specificity or generality in the context of the argument cluster."
+                            }
                         }
                     },
-                    'description': 'List of argumentative discussion units to be evaluated.'
+                    "description": "A comprehensive list of ADUs to be evaluated and clustered based on their stance, frame, meaning, and hierarchical position in relation to the query."
                 }
             }
         }
     }
 ]
+
 
 
 class GranularityService(granularity_pb2_grpc.GranularityServiceServicer):
