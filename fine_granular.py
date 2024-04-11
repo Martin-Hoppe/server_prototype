@@ -73,13 +73,15 @@ class GranularityService(granularity_pb2_grpc.GranularityServiceServicer):
             clustering_result = json.loads(response.choices[0].message.content)
             predictions = []
 
-            for result in clustering_result:
-                # Ensure the result fields are correctly parsed as doubles
+            for adu in clustering_result['adus']:
+                # Assuming each ADU now contains nested structures for 'stance', 'frame', etc.
+                # And assuming that 'stance', 'frame', 'meaning', and 'hierarchic' are now directly accessible
+                # as attributes of the ADU and no longer need complex processing or scoring extraction
                 prediction = granularity_pb2.GranularityPrediction(
-                    stance=float(result['stance']),
-                    frame=float(result['frame']),
-                    meaning=float(result['meaning']),
-                    hierarchic=float(result['hierarchic'])
+                    stance=float(adu['stance']),
+                    frame=float(adu['frame']),
+                    meaning=float(adu['meaning']),
+                    hierarchic=float(adu['hierarchic'])
                 )
                 predictions.append(prediction)
 
